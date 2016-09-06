@@ -10,16 +10,22 @@ public class Course {
     }
 
     public Course(String n, String cid) {
-        // implement here
+        this.course_name = n;
+        this.course_id = cid;
     }
 
     public Course(String n, String cid, String l) {
-        // implement here
+        this.course_name = n;
+        this.course_id = cid;
+        this.lecturer = l;
     }
 
     public Course(String n, String cid, String l, int max) {
         this.course_name = !n.equalsIgnoreCase("")?n:"TBA";
-        // implement the rest here
+        this.course_id = isValidCourse_id(cid)?cid:"000000";
+        this.lecturer = !l.equalsIgnoreCase("")?l:"TBA";
+        this.max_students = (max>9)?max:30;
+        this.no_students = 0;
     }
 
     public String getCourse_name() {
@@ -38,32 +44,34 @@ public class Course {
         this.course_id = isValidCourse_id(course_id)?course_id:this.course_id;
     }
 
-    // implement the other get and set methods here
     public String getLecturer() {
-        // implement here
-        return "lecturer";
+        return lecturer;
     }
 
     public void setLecturer(String lecturer) {
-        // implement here
+        this.lecturer = !lecturer.equalsIgnoreCase("")?lecturer:this.lecturer;
     }
 
     public int getMax_students() {
-        // implement here
-        return 0;
+        return max_students;
     }
 
     public void setMax_students(int max_students) {
-        // implement here
+        if(max_students > 9)
+        {
+            this.max_students = max_students;
+        }
     }
 
     public int getNo_students() {
-        // implement here
-        return 0;
+        return no_students;
     }
 
     public void setNo_students(int no_students) {
-        // implement here
+        if(no_students > 0 && no_students <= max_students)
+        {
+            this.no_students = no_students;
+        }
     }
 
     @Override
@@ -72,7 +80,18 @@ public class Course {
                 + this.course_id + "), Teacher: "
                 + this.lecturer + ", has ";
 
-        // implement the rest here
+        if(no_students == 0)
+        {
+            o += "NO student, [maximum: " + this.max_students + "]";
+        }
+        else if(no_students == 1)
+        {
+            o += "ONE student, [maximum: " + this.max_students + "]";
+        }
+        else
+        {
+            o += this.no_students + " students, [maximum: " + this.max_students + "]";
+        }
 
         return o;
     }
@@ -81,9 +100,7 @@ public class Course {
         Pattern p = Pattern.compile(idREGEX);
         Matcher m = p.matcher(id);
 
-        // implement the rest here
-
-        return true;
+        return m.matches();
     }
 
     // Regular expression for the Student ID pattern
